@@ -1,6 +1,9 @@
+import nnfs
 import numpy as np
+from nnfs.datasets import spiral_data
 
 np.random.seed(0)
+nnfs.init()
 
 
 class LayerDense:
@@ -12,19 +15,19 @@ class LayerDense:
         self.output = np.dot(inputs, self.weights) + self.biases
 
 
-X = [[1, 2, 3, 2.5],
-     [2.0, 5.0, -1.0, 2.0],
-     [-1.5, 2.7, 3.3, -0.8]]
-
-
 class ActivationReLU:
     def forward(self, inputs):
         self.output = np.maximum(0, inputs)
 
 
-layer_1 = LayerDense(4, 5)
-layer_2 = LayerDense(5, 2)
-layer_1.forward(X)
-print(layer_1.output)
-layer_2.forward(layer_1.output)
-print(layer_2.output)
+X = [[1, 2, 3, 2.5],
+     [2.0, 5.0, -1.0, 2.0],
+     [-1.5, 2.7, 3.3, -0.8]]
+
+X, y = spiral_data(100, 3)
+
+layer1 = LayerDense(2, 5)
+activation1 = ActivationReLU()
+layer1.forward(X)
+activation1.forward(layer1.output)
+print(activation1.output)
